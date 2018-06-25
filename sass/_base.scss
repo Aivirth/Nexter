@@ -22,6 +22,10 @@ $columns-number: 8;
   @return $result;
 }
 
+//^^ Breakpoints
+$bp-largest: (1200/16) * 1em;
+$bp-large: (1000/16) * 1em;
+
 *,
 *::before,
 *::after {
@@ -32,7 +36,11 @@ $columns-number: 8;
 
 html {
   box-sizing: border-box;
-  font-size: 62.5%;
+  font-size: 62.5%; //~ 10px/16px = 62.5% => 1rem = 10px
+
+  @media only screen and (max-width: $bp-largest) {
+    font-size: 50%;
+  }
 }
 
 body {
@@ -59,4 +67,20 @@ body {
         [col-end]
     )
     [center-end] minmax(6rem, 1fr) [full-end];
+
+  @media only screen and (max-width: $bp-large) {
+    grid-template-rows: 6rem 80vh min-content repeat(4, min-content);
+    grid-template-columns:
+      [ full-start] minmax(6rem, 1fr)
+      [center-start] repeat(
+        $columns-number,
+        [col-start]
+          minmax(
+            min-content,
+            calculateColumnWidthRem($columns-number, $container-width)
+          )
+          [col-end]
+      )
+      [center-end] minmax(6rem, 1fr) [full-end];
+  }
 }
